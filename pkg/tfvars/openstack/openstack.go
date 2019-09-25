@@ -8,31 +8,33 @@ import (
 )
 
 type config struct {
-	BaseImage       string `json:"openstack_base_image,omitempty"`
-	ExternalNetwork string `json:"openstack_external_network,omitempty"`
-	Cloud           string `json:"openstack_credentials_cloud,omitempty"`
-	FlavorName      string `json:"openstack_master_flavor_name,omitempty"`
-	LbFloatingIP    string `json:"openstack_lb_floating_ip,omitempty"`
-	APIVIP          string `json:"openstack_api_int_ip,omitempty"`
-	DNSVIP          string `json:"openstack_node_dns_ip,omitempty"`
-	IngressVIP      string `json:"openstack_ingress_ip,omitempty"`
-	TrunkSupport    string `json:"openstack_trunk_support,omitempty"`
-	OctaviaSupport  string `json:"openstack_octavia_support,omitempty"`
+	BaseImage         string `json:"openstack_base_image,omitempty"`
+	ExternalNetwork   string `json:"openstack_external_network,omitempty"`
+	Cloud             string `json:"openstack_credentials_cloud,omitempty"`
+	FlavorName        string `json:"openstack_master_flavor_name,omitempty"`
+	LbFloatingIP      string `json:"openstack_lb_floating_ip,omitempty"`
+	APIVIP            string `json:"openstack_api_int_ip,omitempty"`
+	DNSVIP            string `json:"openstack_node_dns_ip,omitempty"`
+	IngressVIP        string `json:"openstack_ingress_ip,omitempty"`
+	TrunkSupport      string `json:"openstack_trunk_support,omitempty"`
+	OctaviaSupport    string `json:"openstack_octavia_support,omitempty"`
+	AvailabilityZone  string `json:"openstack_availability_zone,omitempty"`
 }
 
 // TFVars generates OpenStack-specific Terraform variables.
 func TFVars(masterConfig *v1alpha1.OpenstackProviderSpec, cloud string, externalNetwork string, lbFloatingIP string, apiVIP string, dnsVIP string, ingressVIP string, trunkSupport string, octaviaSupport string) ([]byte, error) {
 	cfg := &config{
-		BaseImage:       masterConfig.Image,
-		ExternalNetwork: externalNetwork,
-		Cloud:           cloud,
-		FlavorName:      masterConfig.Flavor,
-		LbFloatingIP:    lbFloatingIP,
-		APIVIP:          apiVIP,
-		DNSVIP:          dnsVIP,
-		IngressVIP:      ingressVIP,
-		TrunkSupport:    trunkSupport,
-		OctaviaSupport:  octaviaSupport,
+		BaseImage:        masterConfig.Image,
+		ExternalNetwork:  externalNetwork,
+		Cloud:            cloud,
+		FlavorName:       masterConfig.Flavor,
+		LbFloatingIP:     lbFloatingIP,
+		APIVIP:           apiVIP,
+		DNSVIP:           dnsVIP,
+		IngressVIP:       ingressVIP,
+		TrunkSupport:     trunkSupport,
+		OctaviaSupport:   octaviaSupport,
+		AvailabilityZone: masterConfig.AvailabilityZone,
 	}
 
 	return json.MarshalIndent(cfg, "", "  ")
